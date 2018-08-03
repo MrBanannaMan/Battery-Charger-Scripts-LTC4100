@@ -7,7 +7,7 @@
 #Address Maps
 LTC4100_READ=0x09
 SMBUS_SYSTEM_HOST=0x10
-LTC4100_DEVICE_ADDRESS=0x12
+LTC4100_DEVICE_ADDRESS=0x12     /Device Slave Address or 0001 0010 BIN with zero-padded Right-side LSB
 SMART_BATTERY_SELECTOR=0x14
 SMART_BATTERY=0x16
 
@@ -25,11 +25,11 @@ LTC4100_ALARM_WARNING=0x16
 LTC4100_LTCO=0x3C
 
 #Calling the ChargerStatus() function
-VALUE=$( i2cget -y 1 $LTC4100_DEVICE_ADDRESS $LTC4100_CHARGER_STATUS w )
+VALUE=$( i2cget -y 0 $LTC4100_DEVICE_ADDRESS $LTC4100_CHARGER_STATUS w )
 echo "ChargerStatus() Return HEX: "$VALUE
 VALUEBIN=$(echo "obase=2; ibase=10; $(($VALUE))" | bc)
 echo "ChargerStatus() Return BIN: "$VALUEBIN
 
-#Note: The i2c bus used by LTC4100 may not be '1'. Might have to change line 28 if device is not on that bus
-#Syntax: I2cget [-f] [-y] 0 <DEVICE ADDRESS> <FUNCTION/REGISTER ADDRESS> [MODE]
+#Note: The i2c bus used by LTC4100 is '0' as we use LT28.2 jetpack and thus use the /dev/i2c0 bus
+#Syntax: I2cget [-f] [-y] <i2cbus> <DEVICE ADDRESS> <FUNCTION/REGISTER ADDRESS> [MODE]
 #https://onion.io/2bt-digging-into-i2cget-and-i2cset/
