@@ -24,12 +24,15 @@ LTC4100_ALARM_WARNING=0x16
 #Read/Write LTC4100 Register
 LTC4100_LTCO=0x3C
 
-#Calling the ChargerStatus() function
+#Initialize communication with Slave and calling the ChargerStatus() function:
 VALUE=$( i2cget -y 0 $LTC4100_DEVICE_ADDRESS $LTC4100_CHARGER_STATUS w )
-echo "ChargerStatus() Return HEX: "$VALUE
-VALUEBIN=$(echo "obase=2; ibase=10; $(($VALUE))" | bc)
-echo "ChargerStatus() Return BIN: "$VALUEBIN
 
 #Note: The i2c bus used by LTC4100 is '0' as we use LT28.2 jetpack and thus use the /dev/i2c0 bus
 #Syntax: I2cget [-f] [-y] <i2cbus> <DEVICE ADDRESS> <FUNCTION/REGISTER ADDRESS> [MODE]
 #https://onion.io/2bt-digging-into-i2cget-and-i2cset/
+
+echo "ChargerStatus() Return HEX: "$VALUE
+VALUEBIN=$(echo "obase=2; ibase=10; $(($VALUE))" | bc)
+echo "ChargerStatus() Return BIN: "$VALUEBIN
+
+
